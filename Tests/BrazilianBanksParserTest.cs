@@ -1,14 +1,41 @@
-﻿using System.IO;
+﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
+using OfxSharpLib;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
-using OfxSharpLib;
 
 namespace OFXSharp.Tests
 {
     [TestFixture]
     public class BrazilianBanksParserTest
     {
+
+        [Test]
+        public void CanParseItauBR_ComDecimaisComVirgula()
+        {
+            var parser = new OfxDocumentParser();
+            var ofxDocument = parser.Import(new FileStream(@"itau_padrao_BR.ofx", FileMode.Open));
+
+            Assert.AreEqual(ofxDocument.Account.AccountId, "9999 99999-9");
+            Assert.AreEqual(ofxDocument.Account.BankId, "0341");
+
+            Assert.AreEqual(3, ofxDocument.Transactions.Count());
+
+            foreach (var transaction in ofxDocument.Transactions)
+            {             
+                if (transaction.Memo == "RSHOP")
+                    Assert.AreEqual(transaction.Amount, -666.66);
+                if (transaction.Memo == "SISDEB")
+                    Assert.AreEqual(transaction.Amount, -77.77);
+                if (transaction.Memo == "REND PAGO APLIC AUT MAIS")
+                    Assert.AreEqual(transaction.Amount, 99.99);
+            }
+
+            CollectionAssert.AreEqual(ofxDocument.Transactions.Select(x => x.Memo.Trim()).ToList(), new[] { "RSHOP", "REND PAGO APLIC AUT MAIS", "SISDEB" });
+        }
+
         [Test]
         public void CanParseItau()
         {
