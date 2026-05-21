@@ -11,7 +11,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageId>ejsilva.OfxSharpLib</PackageId>
     <Title>OfxSharpLib</Title>
-    <Version>8.9.2</Version>
+    <Version>8.9.4</Version>
     <Authors>Afonso França, Antônio Milesi Bastos, James Hollingworth</Authors>
     <Copyright>MIT</Copyright>
     <PackageProjectUrl>https://github.com/EvertonJSilva/OfxSharp</PackageProjectUrl>
@@ -35,6 +35,10 @@
     <None Include="ModelDiagram.cd" />
     <None Include="OfxSharp.nuspec" />
     <None Include="packages.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Xml.SgmlReader" Version="1.8.30" />
   </ItemGroup>
 
 </Project>
